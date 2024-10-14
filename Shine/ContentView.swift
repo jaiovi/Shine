@@ -50,12 +50,16 @@ struct ContentView: View {
         ScrollView {
             VStack (alignment: .leading){
                 
+                
+                
                 Text("What's one step you can take today to overcome your fear and start?")
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .padding()
                 
+
                 TextField("I want to...", text: $viewModel.daily.firstQuestion, axis: .vertical)
+
                     .padding()
                     
                     .textFieldStyle(.roundedBorder)
@@ -78,23 +82,19 @@ struct ContentView: View {
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: viewModel.daily.task) {
                             viewModel.saveDailyToDefaults() // Autosave when Task changes
+                          
+                           Toggle(isOn: $viewModel.daily.isFinished) {
+                            
+                        }.padding()
+                            .onChange(of: viewModel.daily.isFinished) {
+                                viewModel.saveDailyToDefaults()
+                            }
                         }
-                    
-                    // FinishedTask toggle
-                    /* Toggle(isOn: $viewModel.daily.isFinished) {
-                     
-                     }
-                     .padding()
-                     .onChange(of: viewModel.daily.isFinished) {
-                     viewModel.saveDailyToDefaults()
-                     }*/
-                    
-                    
-                        Toggle(isOn: $viewModel.daily.isFinished) {
-                        }
-                        .padding(.trailing)
                     .toggleStyle(CheckboxToggleStyle())
                     .foregroundColor(.primary)
+
+                  
+                  
                 }
                 
                 Text("What's one step you can take today to overcome your fear and start?")
