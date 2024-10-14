@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct CheckboxToggleStyle: ToggleStyle {
-  func makeBody(configuration: Self.Configuration) -> some View {
-    HStack {
-      configuration.label
-      Spacer()
-      Image(systemName: configuration.isOn ? "checkmark.square" : "square")
-        .resizable()
-        .frame(width: 24, height: 24)
-        .onTapGesture { configuration.isOn.toggle() }
+    func makeBody(configuration: Self.Configuration) -> some View {
+        HStack {
+            configuration.label
+            Spacer()
+            Image(systemName: configuration.isOn ? "checkmark.square" : "square")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .onTapGesture { configuration.isOn.toggle() }
+        }
     }
-  }
 }
 
 struct ContentView: View {
@@ -29,13 +29,13 @@ struct ContentView: View {
         HStack {
             VStack (alignment: .leading){
                 Text("Hello 👋🏼")
-                    .padding(.leading, 20.0)
+                    .padding(.leading, 30)
                     .foregroundStyle(Color.gray)
                     .multilineTextAlignment(.leading)
                 
                 Text("keep up your work!")
                     .multilineTextAlignment(.leading)
-                    .padding(.leading,20.0)
+                    .padding(.leading,30)
             }
             
             Image(systemName: "flame.circle.fill")
@@ -44,8 +44,6 @@ struct ContentView: View {
                 .foregroundColor(Color.blue)
                 .padding(.horizontal, 60.0)
         }
-        
-        
         .padding(.top, 20)
         
         
@@ -56,41 +54,47 @@ struct ContentView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .padding()
-                TextField("Step: What are you going to do?", text: $viewModel.daily.firstQuestion)
+                
+                TextField("I want to...", text: $viewModel.daily.firstQuestion, axis: .vertical)
                     .padding()
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    .textFieldStyle(.roundedBorder)
+                    .lineLimit(5,reservesSpace: true)
                     .onChange(of: viewModel.daily.firstQuestion) {
                         viewModel.saveDailyToDefaults() // Autosave when Step changes
                     }
+
+                
+                
+                
                 Text("Today Tasks")
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading).padding()
                 
                 // Task text field
                 HStack {
-                    TextField("Task: One goal for the day", text: $viewModel.daily.task)
+                    TextField("One goal for the day", text: $viewModel.daily.task)
                         .padding()
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .textFieldStyle(.roundedBorder)
                         .onChange(of: viewModel.daily.task) {
                             viewModel.saveDailyToDefaults() // Autosave when Task changes
                         }
                     
                     // FinishedTask toggle
-                   /* Toggle(isOn: $viewModel.daily.isFinished) {
-                        
-                    }
-                    .padding()
-                    .onChange(of: viewModel.daily.isFinished) {
-                        viewModel.saveDailyToDefaults()
-                    }*/
+                    /* Toggle(isOn: $viewModel.daily.isFinished) {
+                     
+                     }
+                     .padding()
+                     .onChange(of: viewModel.daily.isFinished) {
+                     viewModel.saveDailyToDefaults()
+                     }*/
                     
-                    HStack {
+                    
                         Toggle(isOn: $viewModel.daily.isFinished) {
-                            
                         }
-                            }
+                        .padding(.trailing)
                     .toggleStyle(CheckboxToggleStyle())
-                            .foregroundColor(.primary)
+                    .foregroundColor(.primary)
                 }
                 
                 Text("What's one step you can take today to overcome your fear and start?")
@@ -99,9 +103,10 @@ struct ContentView: View {
                     .padding()
                 
                 // Feeling text field
-                TextField("Feeling: How did it feel?", text: $viewModel.daily.secondQuestion)
+                TextField("today I felt...", text: $viewModel.daily.secondQuestion, axis: .vertical)
                     .padding()
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(.roundedBorder)
+                    .lineLimit(5,reservesSpace: true)
                     .onChange(of: viewModel.daily.secondQuestion) {
                         viewModel.saveDailyToDefaults() // Autosave when Feeling changes
                     }
