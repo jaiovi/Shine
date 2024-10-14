@@ -12,6 +12,27 @@ struct ContentView: View {
     @StateObject private var viewModel = DailyViewModel()
     
     var body: some View {
+        
+        HStack {
+            VStack (alignment: .leading){
+                Text("Hello 👋🏼")
+                    .padding(.leading)
+                    .foregroundStyle(Color.gray)
+                    .multilineTextAlignment(.leading)
+                
+                Text("keep up your work!")
+                    .multilineTextAlignment(.leading)
+                    .padding(.leading)
+                    
+            }
+            
+            Image(systemName: "flame.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(Color.blue)
+                .padding(70.0)
+        }
+        
         VStack {
             Text("Daily Plan")
                 .font(.largeTitle)
