@@ -29,22 +29,25 @@ struct ContentView: View {
         HStack {
             VStack (alignment: .leading){
                 Text("Hello 👋🏼")
-                    .padding(.leading)
+                    .padding(.leading, 20.0)
                     .foregroundStyle(Color.gray)
                     .multilineTextAlignment(.leading)
                 
                 Text("keep up your work!")
                     .multilineTextAlignment(.leading)
-                    .padding(.leading)
-                
+                    .padding(.leading,20.0)
             }
             
             Image(systemName: "flame.circle.fill")
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(Color.blue)
-                .padding(70.0)
+                .padding(.horizontal, 60.0)
         }
+        
+        
+        .padding(.top, 20)
+        
         
         ScrollView {
             VStack (alignment: .leading){
@@ -104,6 +107,7 @@ struct ContentView: View {
                     }
             }
             .padding()
+            
         }
     }
 }
