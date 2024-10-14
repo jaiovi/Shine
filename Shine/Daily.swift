@@ -10,8 +10,8 @@ import SwiftUI
 
 struct Daily: Identifiable, Codable {
     var id: UUID = UUID()
-    var Question1: String
-    var Task : String
-    var FinishedTask: Bool
-    var Question2: String
+    var firstQuestion: String
+    var task : String
+    var isFinished: Bool
+    var secondQuestion: String
 }

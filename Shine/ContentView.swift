@@ -17,35 +17,35 @@ struct ContentView: View {
                 .font(.largeTitle)
             
             // Step text field
-            TextField("Step: What are you going to do?", text: $viewModel.daily.Question1)
+            TextField("Step: What are you going to do?", text: $viewModel.daily.firstQuestion)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: viewModel.daily.Question1) {
+                .onChange(of: viewModel.daily.firstQuestion) {
                     viewModel.saveDailyToDefaults() // Autosave when Step changes
                 }
             
             // Task text field
-            TextField("Task: One goal for the day", text: $viewModel.daily.Task)
+            TextField("Task: One goal for the day", text: $viewModel.daily.task)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: viewModel.daily.Task) {
+                .onChange(of: viewModel.daily.task) {
                     viewModel.saveDailyToDefaults() // Autosave when Task changes
                 }
             
             // FinishedTask toggle
-            Toggle(isOn: $viewModel.daily.FinishedTask) {
+            Toggle(isOn: $viewModel.daily.isFinished) {
                 Text("Finished Task")
             }
             .padding()
-            .onChange(of: viewModel.daily.FinishedTask) {
+            .onChange(of: viewModel.daily.isFinished) {
                 viewModel.saveDailyToDefaults() // Autosave when FinishedTask changes
             }
             
             // Feeling text field
-            TextField("Feeling: How did it feel?", text: $viewModel.daily.Question2)
+            TextField("Feeling: How did it feel?", text: $viewModel.daily.secondQuestion)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: viewModel.daily.Question2) {
+                .onChange(of: viewModel.daily.secondQuestion) {
                     viewModel.saveDailyToDefaults() // Autosave when Feeling changes
                 }
         }

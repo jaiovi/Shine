@@ -13,7 +13,7 @@ class DailyViewModel: ObservableObject {
     
     init() {
         // Initialize daily to an empty/default value first
-        self.daily = Daily(Question1: "", Task: "", FinishedTask: false, Question2: "")
+        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "")
         
         // Now it's safe to use 'self' to call methods
         if let savedDaily = loadDailyFromDefaults() {
@@ -32,7 +32,7 @@ class DailyViewModel: ObservableObject {
         
         if lastActiveDate != currentDateString {
             // A new day has passed, reset the daily data
-            self.daily = Daily(Question1: "", Task: "", FinishedTask: false, Question2: "")
+            self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "")
             lastActiveDate = currentDateString
         }
     }
