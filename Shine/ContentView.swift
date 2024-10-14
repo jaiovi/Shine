@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct CheckboxToggleStyle: ToggleStyle {
-  func makeBody(configuration: Self.Configuration) -> some View {
-    HStack {
-      configuration.label
-      Spacer()
-      Image(systemName: configuration.isOn ? "checkmark.square" : "square")
-        .resizable()
-        .frame(width: 24, height: 24)
-        .onTapGesture { configuration.isOn.toggle() }
+    func makeBody(configuration: Self.Configuration) -> some View {
+        HStack {
+            configuration.label
+            Spacer()
+            Image(systemName: configuration.isOn ? "checkmark.square" : "square")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .onTapGesture { configuration.isOn.toggle() }
+        }
     }
-  }
 }
 
 struct ContentView: View {
@@ -52,10 +52,13 @@ struct ContentView: View {
         ScrollView {
             VStack (alignment: .leading){
                 
+                
+                
                 Text("What's one step you can take today to overcome your fear and start?")
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .padding()
+                
                 TextField("Step: What are you going to do?", text: $viewModel.daily.firstQuestion)
                     .padding()
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -74,23 +77,17 @@ struct ContentView: View {
                         .onChange(of: viewModel.daily.task) {
                             viewModel.saveDailyToDefaults() // Autosave when Task changes
                         }
-                    
-                    // FinishedTask toggle
-                   /* Toggle(isOn: $viewModel.daily.isFinished) {
-                        
-                    }
-                    .padding()
-                    .onChange(of: viewModel.daily.isFinished) {
-                        viewModel.saveDailyToDefaults()
-                    }*/
-                    
+                        .multilineTextAlignment(.leading)
                     HStack {
                         Toggle(isOn: $viewModel.daily.isFinished) {
                             
-                        }
+                        }.padding()
+                            .onChange(of: viewModel.daily.isFinished) {
+                                viewModel.saveDailyToDefaults()
                             }
+                    }
                     .toggleStyle(CheckboxToggleStyle())
-                            .foregroundColor(.primary)
+                    .foregroundColor(.primary)
                 }
                 
                 Text("What's one step you can take today to overcome your fear and start?")
