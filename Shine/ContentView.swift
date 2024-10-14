@@ -33,44 +33,60 @@ struct ContentView: View {
                 .padding(70.0)
         }
         
-        VStack {
-            Text("Daily Plan")
-                .font(.largeTitle)
-            
-            // Step text field
-            TextField("Step: What are you going to do?", text: $viewModel.daily.firstQuestion)
-                .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: viewModel.daily.firstQuestion) {
-                    viewModel.saveDailyToDefaults() // Autosave when Step changes
+        ScrollView {
+            VStack (alignment: .leading){
+                
+                Text("What's one step you can take today to overcome your fear and start?")
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+                    .padding()
+                // Step text field
+                TextField("Step: What are you going to do?", text: $viewModel.daily.firstQuestion)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .onChange(of: viewModel.daily.firstQuestion) {
+                        viewModel.saveDailyToDefaults() // Autosave when Step changes
+                    }
+                
+                Text("Today Tasks")
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading).padding()
+                
+                // Task text field
+                HStack {
+                    TextField("Task: One goal for the day", text: $viewModel.daily.task)
+                        .padding()
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: viewModel.daily.task) {
+                            viewModel.saveDailyToDefaults() // Autosave when Task changes
+                        }
+                
+                
+                // FinishedTask toggle
+                Toggle(isOn: $viewModel.daily.isFinished) {
+                    
                 }
-            
-            // Task text field
-            TextField("Task: One goal for the day", text: $viewModel.daily.task)
                 .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: viewModel.daily.task) {
-                    viewModel.saveDailyToDefaults() // Autosave when Task changes
+                .onChange(of: viewModel.daily.isFinished) {
+                    viewModel.saveDailyToDefaults() // Autosave when FinishedTask changes
                 }
-            
-            // FinishedTask toggle
-            Toggle(isOn: $viewModel.daily.isFinished) {
-                Text("Finished Task")
+                }
+                
+                Text("What's one step you can take today to overcome your fear and start?")
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+                    .padding()
+                
+                // Feeling text field
+                TextField("Feeling: How did it feel?", text: $viewModel.daily.secondQuestion)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .onChange(of: viewModel.daily.secondQuestion) {
+                        viewModel.saveDailyToDefaults() // Autosave when Feeling changes
+                    }
             }
             .padding()
-            .onChange(of: viewModel.daily.isFinished) {
-                viewModel.saveDailyToDefaults() // Autosave when FinishedTask changes
-            }
-            
-            // Feeling text field
-            TextField("Feeling: How did it feel?", text: $viewModel.daily.secondQuestion)
-                .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: viewModel.daily.secondQuestion) {
-                    viewModel.saveDailyToDefaults() // Autosave when Feeling changes
-                }
         }
-        .padding()
     }
 }
 
