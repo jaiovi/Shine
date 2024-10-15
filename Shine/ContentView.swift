@@ -20,9 +20,13 @@ struct CheckboxToggleStyle: ToggleStyle {
     }
 }
 
+ 
+
 struct ContentView: View {
     // ViewModel handles all logic
     @StateObject private var viewModel = DailyViewModel()
+    @State var completedSteps = 0
+    let totalSteps = 3
     
     var body: some View {
         
@@ -36,13 +40,23 @@ struct ContentView: View {
                 Text("keep up your work!")
                     .multilineTextAlignment(.leading)
                     .padding(.leading,30)
+                
+                Text("\(completedSteps)/\(totalSteps)")
+                                       .padding([.top, .leading], 30.0)
+                
+                ProgressView(value: Float(completedSteps), total: Float(totalSteps))
+                    .padding(.leading, 30.0)
+                    .frame(height: 20)
+
             }
             
-            Image(systemName: "flame.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .foregroundColor(Color.blue)
-                .padding(.horizontal, 60.0)
+            ZStack {
+                Image(systemName: "star.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(Color.blue)
+                    .padding(.horizontal, 60.0)
+            }
         }
         .padding(.top, 20)
         
@@ -65,7 +79,8 @@ struct ContentView: View {
                     .textFieldStyle(.roundedBorder)
                     .lineLimit(5,reservesSpace: true)
                     .onChange(of: viewModel.daily.firstQuestion) {
-                        viewModel.saveDailyToDefaults() // Autosave when Step changes
+                        viewModel.saveDailyToDefaults()
+                        updateProgress()
                     }
 
                 
@@ -82,13 +97,14 @@ struct ContentView: View {
                         .padding([.top, .leading, .bottom])
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: viewModel.daily.task) {
-                            viewModel.saveDailyToDefaults() // Autosave when Task changes
+                            viewModel.saveDailyToDefaults()
                         }
                 
                                 Toggle(isOn: $viewModel.daily.isFinished) {
                                 }.padding(.trailing)
                                     .onChange(of: viewModel.daily.isFinished) {
                                                 viewModel.saveDailyToDefaults()
+                                        updateProgress()
                                                             }
                                                     .toggleStyle(CheckboxToggleStyle())
                 }
@@ -105,13 +121,21 @@ struct ContentView: View {
                     .textFieldStyle(.roundedBorder)
                     .lineLimit(5,reservesSpace: true)
                     .onChange(of: viewModel.daily.secondQuestion) {
-                        viewModel.saveDailyToDefaults() // Autosave when Feeling changes
+                        viewModel.saveDailyToDefaults()
+                        updateProgress()
                     }
             }
             .padding()
             
         }
     }
+    
+    private func updateProgress() {
+            completedSteps = 0
+            if !viewModel.daily.firstQuestion.isEmpty { completedSteps += 1 }
+            if !viewModel.daily.task.isEmpty && viewModel.daily.isFinished { completedSteps += 1 }
+            if !viewModel.daily.secondQuestion.isEmpty { completedSteps += 1 }
+        }
 }
 
 
