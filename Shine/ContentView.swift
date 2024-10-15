@@ -94,6 +94,7 @@ struct ContentView: View {
                         TextField("One goal for the day", text: $viewModel.daily.task)
                             .lineLimit(5,reservesSpace: true)
                             .textFieldStyle(.roundedBorder)
+                            .padding(.leading, 4.0)
                             .onChange(of: viewModel.daily.task) {
                                 viewModel.saveDailyToDefaults()
                             }
@@ -118,7 +119,7 @@ struct ContentView: View {
                 
                 
                 
-                Text("What's one step you can take today to overcome your fear and start?")
+                Text("Did you take a step towards your goal today? How does it make you feel?")
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .padding()
