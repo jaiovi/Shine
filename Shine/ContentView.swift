@@ -51,11 +51,17 @@ struct ContentView: View {
             }
             
             ZStack {
-                Image(systemName: "star.circle.fill")
+                Circle()
+                    .stroke(Color.blue, lineWidth: 1)
+                    .frame(width: 150, height: 150)
+                    .padding()
+                Image(systemName: "star.fill")
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(Color.blue)
                     .padding(.horizontal, 60.0)
+                
+                
             }
         }
         .padding(.top, 20)
