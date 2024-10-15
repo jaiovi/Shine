@@ -12,19 +12,15 @@ class DailyViewModel: ObservableObject {
     @AppStorage("lastActiveDate") private var lastActiveDate: String = ""
     
     init() {
-        // Initialize daily to an empty/default value first
         self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "")
         
-        // Now it's safe to use 'self' to call methods
         if let savedDaily = loadDailyFromDefaults() {
             self.daily = savedDaily
         }
         
-        // Check if a new day has passed and reset the data if necessary
         checkIfNewDay()
     }
     
-    // Check if a new day has passed and reset daily data if needed
     func checkIfNewDay() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -32,19 +28,17 @@ class DailyViewModel: ObservableObject {
         
         if lastActiveDate != currentDateString {
             // A new day has passed, reset the daily data
-            self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "")
+            self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0)
             lastActiveDate = currentDateString
         }
     }
     
-    // Save the daily model to UserDefaults
     func saveDailyToDefaults() {
         if let encoded = try? JSONEncoder().encode(daily) {
             UserDefaults.standard.set(encoded, forKey: "dailyModel")
         }
     }
 
-    // Load the daily model from UserDefaults
     private func loadDailyFromDefaults() -> Daily? {
         if let savedDailyData = UserDefaults.standard.object(forKey: "dailyModel") as? Data {
             if let decodedDaily = try? JSONDecoder().decode(Daily.self, from: savedDailyData) {

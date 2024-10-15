@@ -25,7 +25,6 @@ struct CheckboxToggleStyle: ToggleStyle {
 struct ContentView: View {
     // ViewModel handles all logic
     @StateObject private var viewModel = DailyViewModel()
-    @State var completedSteps = 0
     let totalSteps = 3
     
     var body: some View {
@@ -41,10 +40,11 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading)
                     .padding(.leading,30)
                 
-                Text("\(completedSteps)/\(totalSteps)")
+                
+                Text("\(viewModel.daily.completedSteps)/\(totalSteps)")
                                        .padding([.top, .leading], 30.0)
                 
-                ProgressView(value: Float(completedSteps), total: Float(totalSteps))
+                ProgressView(value: Float(viewModel.daily.completedSteps), total: Float(totalSteps))
                     .padding(.leading, 30.0)
                     .frame(height: 20)
 
@@ -139,10 +139,10 @@ struct ContentView: View {
     }
     
     private func updateProgress() {
-            completedSteps = 0
-            if !viewModel.daily.firstQuestion.isEmpty { completedSteps += 1 }
-            if !viewModel.daily.task.isEmpty && viewModel.daily.isFinished { completedSteps += 1 }
-            if !viewModel.daily.secondQuestion.isEmpty { completedSteps += 1 }
+        viewModel.daily.completedSteps = 0
+        if !viewModel.daily.firstQuestion.isEmpty { viewModel.daily.completedSteps += 1 }
+            if !viewModel.daily.task.isEmpty && viewModel.daily.isFinished { viewModel.daily.completedSteps += 1 }
+            if !viewModel.daily.secondQuestion.isEmpty { viewModel.daily.completedSteps += 1 }
         }
 }
 

@@ -14,4 +14,5 @@ struct Daily: Identifiable, Codable {
     var task : String
     var isFinished: Bool
     var secondQuestion: String
+    var completedSteps = 0
 }
