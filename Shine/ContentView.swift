@@ -50,48 +50,53 @@ struct ContentView: View {
         ScrollView {
             VStack (alignment: .leading){
                 
-                
-                
                 Text("What's one step you can take today to overcome your fear and start?")
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .padding()
                 
-
+                
                 TextField("I want to...", text: $viewModel.daily.firstQuestion, axis: .vertical)
-
+                
                     .padding()
-                    
+                
                     .textFieldStyle(.roundedBorder)
                     .lineLimit(5,reservesSpace: true)
                     .onChange(of: viewModel.daily.firstQuestion) {
-                        viewModel.saveDailyToDefaults() // Autosave when Step changes
+                        viewModel.saveDailyToDefaults()
                     }
-
+                
                 
                 
                 
                 Text("Today Tasks")
                     .fontWeight(.bold)
-                    .multilineTextAlignment(.leading).padding()
-                
-                // Task text field
-                
-                HStack {
-                    TextField("One goal for the day", text: $viewModel.daily.task)
-                        .padding([.top, .leading, .bottom])
-                        .textFieldStyle(.roundedBorder)
-                        .onChange(of: viewModel.daily.task) {
-                            viewModel.saveDailyToDefaults() // Autosave when Task changes
+                    .multilineTextAlignment(.leading)
+                    .padding()
+                GeometryReader { geometry in
+                    HStack {
+                        TextField("One goal for the day", text: $viewModel.daily.task)
+                            .lineLimit(5,reservesSpace: true)
+                            .textFieldStyle(.roundedBorder)
+                            .onChange(of: viewModel.daily.task) {
+                                viewModel.saveDailyToDefaults()
+                            }
+                            .frame(width: geometry.size.width * 0.9)
+                        
+                        Toggle(isOn: $viewModel.daily.isFinished) {
+                            // Boş bırakılabilir
                         }
-                
-                                Toggle(isOn: $viewModel.daily.isFinished) {
-                                }.padding(.trailing)
-                                    .onChange(of: viewModel.daily.isFinished) {
-                                                viewModel.saveDailyToDefaults()
-                                                            }
-                                                    .toggleStyle(CheckboxToggleStyle())
+                        .padding(.trailing)
+                        .onChange(of: viewModel.daily.isFinished) {
+                            viewModel.saveDailyToDefaults()
+                        }
+                        .toggleStyle(CheckboxToggleStyle())
+                        .frame(width: geometry.size.width * 0.1)                    }
+                    .frame(width: geometry.size.width)
                 }
+                .frame(height: 30)
+                .padding()
+                
                 
                 
                 Text("What's one step you can take today to overcome your fear and start?")
