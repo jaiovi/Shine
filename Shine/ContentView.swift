@@ -76,26 +76,23 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading).padding()
                 
                 // Task text field
+                
                 HStack {
                     TextField("One goal for the day", text: $viewModel.daily.task)
-                        .padding()
+                        .padding([.top, .leading, .bottom])
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: viewModel.daily.task) {
                             viewModel.saveDailyToDefaults() // Autosave when Task changes
-                          
-                           Toggle(isOn: $viewModel.daily.isFinished) {
-                            
-                        }.padding()
-                            .onChange(of: viewModel.daily.isFinished) {
-                                viewModel.saveDailyToDefaults()
-                            }
                         }
-                    .toggleStyle(CheckboxToggleStyle())
-                    .foregroundColor(.primary)
-
-                  
-                  
+                
+                                Toggle(isOn: $viewModel.daily.isFinished) {
+                                }.padding(.trailing)
+                                    .onChange(of: viewModel.daily.isFinished) {
+                                                viewModel.saveDailyToDefaults()
+                                                            }
+                                                    .toggleStyle(CheckboxToggleStyle())
                 }
+                
                 
                 Text("What's one step you can take today to overcome your fear and start?")
                     .fontWeight(.bold)
