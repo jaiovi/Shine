@@ -12,7 +12,7 @@ class DailyViewModel: ObservableObject {
     @AppStorage("lastActiveDate") private var lastActiveDate: String = ""
     
     init() {
-        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "")
+        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0)
         
         if let savedDaily = loadDailyFromDefaults() {
             self.daily = savedDaily
@@ -28,7 +28,7 @@ class DailyViewModel: ObservableObject {
         
         if lastActiveDate != currentDateString {
             // A new day has passed, reset the daily data
-            self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0)
+            self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0 )
             lastActiveDate = currentDateString
         }
     }
