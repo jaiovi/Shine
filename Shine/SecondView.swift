@@ -8,16 +8,34 @@
 import SwiftUI
 
 struct SecondView: View {
+    
+    @StateObject private var viewModel = DailyViewModel()
+    let totalSteps: Int = 3
     var body: some View {
-            VStack {
-                Text("Second View")
-                    .font(.largeTitle)
+        HStack {
+          
+            
+            ZStack {
+                
+                Image(systemName: "star.circle")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(Color.blue)
+
+                    .padding(.horizontal, 39.0)
+                Text("\(viewModel.daily.streak)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white)
                     .padding()
                 
-                // Add more UI elements here if needed
+                
+
             }
+        }
+        .padding(.top, 20)
             
-            .navigationBarBackButtonHidden(true) // Hide the back button
+            
         }
 }
 

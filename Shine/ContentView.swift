@@ -44,7 +44,7 @@ struct AnimatedProgressBar: View {
 
 struct ContentView: View {
     @StateObject private var viewModel = DailyViewModel()
-
+ 
     let totalSteps = 3
     
     var body: some View {
@@ -113,6 +113,7 @@ struct ContentView: View {
 
                     }
                     .disabled(viewModel.daily.completedSteps > 1)
+                    .disabled( viewModel.daily.completed)
                 
                 Text("Today Tasks")
                     .fontWeight(.bold)
@@ -125,6 +126,7 @@ struct ContentView: View {
                             .textFieldStyle(.roundedBorder)
                             .padding(.leading, 4.0)
                             .disabled(viewModel.daily.completedSteps > 2)
+                            .disabled( viewModel.daily.completed)
                             
                             .onChange(of: viewModel.daily.task) {
                                 viewModel.saveDailyToDefaults()
@@ -143,7 +145,7 @@ struct ContentView: View {
                         }
                         .disabled(viewModel.daily.completedSteps > 2)
                         .disabled(viewModel.daily.firstQuestion.isEmpty)
-                        
+                        .disabled( viewModel.daily.completed)
                         .toggleStyle(CheckboxToggleStyle())
                         .frame(width: geometry.size.width * 0.1)                    }
                     .frame(width: geometry.size.width)
@@ -169,7 +171,7 @@ struct ContentView: View {
                         }
                         .disabled(viewModel.daily.task.isEmpty)
                         .disabled(!viewModel.daily.isFinished )
-                    
+                        .disabled( viewModel.daily.completed == true)
                 
             }
             .padding()
@@ -182,7 +184,8 @@ struct ContentView: View {
                     viewModel.daily.progress = CGFloat(viewModel.daily.completedSteps) / CGFloat(totalSteps)
                 }
             }
-            if viewModel.daily.completedSteps == 3 {
+            
+            if viewModel.daily.completedSteps == 3 && !viewModel.daily.completed {
                 NavigationLink(destination: SecondView()) {
                     Text("Complete your day")
                         .padding()
@@ -192,12 +195,21 @@ struct ContentView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
                 .simultaneousGesture(TapGesture().onEnded {
-                    viewModel.daily.streak += 1 // Increment the streak when navigating
+                    viewModel.daily.streak += 1
+                    viewModel.daily.completed = true
+                    viewModel.saveDailyToDefaults()
+                    // Increment the streak when navigating
                 })
                 .padding()
                 
             
-        } else {
+            }else if viewModel.daily.completed {
+                Text("you are done for today")
+                                        .padding()
+                                        .foregroundColor(.gray)
+            }
+            
+            else {
             Text("Complete all steps to proceed")
                                     .padding()
                                     .foregroundColor(.gray)
