@@ -76,7 +76,7 @@ struct ContentView: View {
                     .scaledToFit()
                     .foregroundColor(Color.blue)
 
-                    .padding(.horizontal, 30.0)
+                    .padding(.horizontal, 40.0)
                 Text("\(viewModel.daily.streak)")
                     .font(.title)
                     .fontWeight(.bold)
