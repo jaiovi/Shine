@@ -48,7 +48,9 @@ struct ContentView: View {
     let totalSteps = 3
     
     var body: some View {
-        
+        NavigationStack {
+            
+       
         HStack {
             VStack (alignment: .leading){
                 Text("Hello 👋🏼")
@@ -76,7 +78,7 @@ struct ContentView: View {
                     .scaledToFit()
                     .foregroundColor(Color.blue)
 
-                    .padding(.horizontal, 40.0)
+                    .padding(.horizontal, 39.0)
                 Text("\(viewModel.daily.streak)")
                     .font(.title)
                     .fontWeight(.bold)
@@ -180,18 +182,27 @@ struct ContentView: View {
                     viewModel.daily.progress = CGFloat(viewModel.daily.completedSteps) / CGFloat(totalSteps)
                 }
             }
+            if viewModel.daily.completedSteps == 3 {
+                NavigationLink(destination: SecondView()) {
+                    Text("Complete your day")
+                        .padding()
+                        .bold()
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
+                .simultaneousGesture(TapGesture().onEnded {
+                    viewModel.daily.streak += 1 // Increment the streak when navigating
+                })
+                .padding()
+                
             
-            
-            Button{ viewModel.daily.streak += 1 }
-             label: { Text("complete your day")
-             .padding()
-             .bold()
-             .foregroundStyle(Color.white)
-             .background{Color.blue}
-             .clipShape(RoundedRectangle(cornerRadius: 20))
-                 
-             }
-
+        } else {
+            Text("Complete all steps to proceed")
+                                    .padding()
+                                    .foregroundColor(.gray)
+            }
+        }
         }
     }
     
