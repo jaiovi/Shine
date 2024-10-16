@@ -186,7 +186,14 @@ struct ContentView: View {
             }
             
             if viewModel.daily.completedSteps == 3 && !viewModel.daily.completed {
-                NavigationLink(destination: SecondView()) {
+                Button(action: {
+                    // Perform the same actions without navigation
+                    viewModel.daily.streak += 1
+                    viewModel.daily.completed = true
+                    viewModel.saveDailyToDefaults()
+                    
+                    // Trigger any additional effects you want, like a confetti animation.
+                }) {
                     Text("Complete your day")
                         .padding()
                         .bold()
@@ -194,16 +201,9 @@ struct ContentView: View {
                         .background(Color.blue)
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
-                .simultaneousGesture(TapGesture().onEnded {
-                    viewModel.daily.streak += 1
-                    viewModel.daily.completed = true
-                    viewModel.saveDailyToDefaults()
-                    // Increment the streak when navigating
-                })
                 .padding()
-                
-            
-            }else if viewModel.daily.completed {
+            }
+            else if viewModel.daily.completed {
                 Text("you are done for today")
                                         .padding()
                                         .foregroundColor(.gray)
