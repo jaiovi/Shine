@@ -13,7 +13,7 @@ class DailyViewModel: ObservableObject {
     
     init() {
 
-        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0, streak: 0, progress: 0.0)
+        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0, streak: 0, progress: 0.0, completed: false)
 
         
         if let savedDaily = loadDailyFromDefaults() {
@@ -44,6 +44,7 @@ class DailyViewModel: ObservableObject {
                         self.daily.secondQuestion = ""
                         self.daily.completedSteps = 0
           self.daily.progress = 0
+            self.daily.completed = false
             
 
             lastActiveDate = currentDateString
@@ -69,5 +70,8 @@ class DailyViewModel: ObservableObject {
         let totalSteps = 3
         self.daily.progress = CGFloat(daily.completedSteps) / CGFloat(totalSteps)
     }
+    
+    
+    
 }
 

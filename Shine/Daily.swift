@@ -18,7 +18,8 @@ struct Daily: Identifiable, Codable {
 
     var streak: Int
 
-    var progress: CGFloat 
+    var progress: CGFloat
+    var completed: Bool 
 
 }
 
