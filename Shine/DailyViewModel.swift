@@ -34,7 +34,7 @@ class DailyViewModel: ObservableObject {
             // A new day has passed, reset the daily data
 
             
-            if self.daily.completedSteps != 3{
+            if self.daily.completed == false{
                 self.daily.streak = 0
             }
             
