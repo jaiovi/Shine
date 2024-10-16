@@ -20,12 +20,31 @@ struct CheckboxToggleStyle: ToggleStyle {
     }
 }
 
- 
+struct AnimatedProgressBar: View {
+    @Binding var progress: CGFloat
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 20)
+                    .cornerRadius(10)
+                Rectangle()
+                    .fill(Color.blue)
+                    .frame(width: geometry.size.width * progress, height: 20)
+                    .cornerRadius(10)
+                    .animation(.easeInOut(duration: 0.5), value: progress)
+            }
+        }
+        .padding(5)
+    }
+}
+
 
 struct ContentView: View {
-    // ViewModel handles all logic
     @StateObject private var viewModel = DailyViewModel()
-    @State private var showFeelingSection = false
+
     let totalSteps = 3
     
     var body: some View {
@@ -41,15 +60,13 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading)
                     .padding(.leading,30)
                 
-                
                 Text("\(viewModel.daily.completedSteps)/\(totalSteps)")
                     .padding([.top, .leading], 30.0)
                 
-                ProgressView(value: Float(viewModel.daily.completedSteps), total: Float(totalSteps))
-                    .padding(.leading, 30.0)
+                AnimatedProgressBar(progress: $viewModel.daily.progress)
+                    .padding(.leading, 25.0)
                     .frame(height: 20)
-                
-                
+
             }
             
             ZStack {
@@ -58,6 +75,7 @@ struct ContentView: View {
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(Color.blue)
+
                     .padding(.horizontal, 30.0)
                 Text("\(viewModel.daily.streak)")
                     .font(.title)
@@ -66,6 +84,7 @@ struct ContentView: View {
                     .padding()
                 
                 
+
             }
         }
         .padding(.top, 20)
@@ -79,7 +98,6 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading)
                     .padding()
                 
-                
                 TextField("I want to...", text: $viewModel.daily.firstQuestion, axis: .vertical)
                 
                     .padding()
@@ -90,12 +108,9 @@ struct ContentView: View {
                     .onChange(of: viewModel.daily.firstQuestion) {
                         viewModel.saveDailyToDefaults()
                         updateProgress()
-                        
+
                     }
                     .disabled(viewModel.daily.completedSteps > 1)
-                
-                
-                
                 
                 Text("Today Tasks")
                     .fontWeight(.bold)
@@ -130,15 +145,11 @@ struct ContentView: View {
                         .toggleStyle(CheckboxToggleStyle())
                         .frame(width: geometry.size.width * 0.1)                    }
                     .frame(width: geometry.size.width)
-                    
-                    
+          
                 }
                 .frame(height: 30)
                 .padding()
-               
-                                   
-              
-                    
+      
                     Text("Did you take a step towards your goal today? How does it make you feel?")
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
@@ -160,7 +171,15 @@ struct ContentView: View {
                 
             }
             .padding()
-            
+            .onAppear {
+                updateProgress() // Update progress on appear
+            }
+            .onChange(of: viewModel.daily.completedSteps) { _ in
+                // Update the progress whenever the completed steps change
+                withAnimation {
+                    viewModel.daily.progress = CGFloat(viewModel.daily.completedSteps) / CGFloat(totalSteps)
+                }
+            }
             
             
             Button{ viewModel.daily.streak += 1 }
@@ -172,6 +191,7 @@ struct ContentView: View {
              .clipShape(RoundedRectangle(cornerRadius: 20))
                  
              }
+
         }
     }
     
@@ -182,17 +202,13 @@ struct ContentView: View {
             if !viewModel.daily.task.isEmpty && viewModel.daily.isFinished { viewModel.daily.completedSteps = 2
                 
                 if !viewModel.daily.secondQuestion.isEmpty { viewModel.daily.completedSteps = 3
-                    }
-                
+
+                }
             }
-            
-            
         }
-        
+
     }
 }
-
-
 
 #Preview {
     ContentView()
