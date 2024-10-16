@@ -26,18 +26,15 @@ struct AnimatedProgressBar: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
-                // Background bar
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 20)
                     .cornerRadius(10)
-                
-                // Animated filling
                 Rectangle()
                     .fill(Color.blue)
                     .frame(width: geometry.size.width * progress, height: 20)
                     .cornerRadius(10)
-                    .animation(.easeInOut(duration: 0.5), value: progress) // Animation on progress change
+                    .animation(.easeInOut(duration: 0.5), value: progress)
             }
         }
         .padding(5)
@@ -47,7 +44,7 @@ struct AnimatedProgressBar: View {
 
 struct ContentView: View {
     @StateObject private var viewModel = DailyViewModel()
-    @State private var progress: CGFloat = 0
+//    @State private var progress: CGFloat = 0
     
     let totalSteps = 3
     
@@ -64,11 +61,10 @@ struct ContentView: View {
                     .multilineTextAlignment(.leading)
                     .padding(.leading,30)
                 
-                
                 Text("\(viewModel.daily.completedSteps)/\(totalSteps)")
                     .padding([.top, .leading], 30.0)
                 
-                AnimatedProgressBar(progress: $progress)
+                AnimatedProgressBar(progress: $viewModel.daily.progress)
                     .padding(.leading, 25.0)
                     .frame(height: 20)
             }
@@ -160,7 +156,7 @@ struct ContentView: View {
             .onChange(of: viewModel.daily.completedSteps) { _ in
                 // Update the progress whenever the completed steps change
                 withAnimation {
-                    progress = CGFloat(viewModel.daily.completedSteps) / CGFloat(totalSteps)
+                    viewModel.daily.progress = CGFloat(viewModel.daily.completedSteps) / CGFloat(totalSteps)
                 }
             }
         }
