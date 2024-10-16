@@ -25,6 +25,7 @@ struct CheckboxToggleStyle: ToggleStyle {
 struct ContentView: View {
     // ViewModel handles all logic
     @StateObject private var viewModel = DailyViewModel()
+    @State private var showFeelingSection = false
     let totalSteps = 3
     
     var body: some View {
@@ -42,24 +43,27 @@ struct ContentView: View {
                 
                 
                 Text("\(viewModel.daily.completedSteps)/\(totalSteps)")
-                                       .padding([.top, .leading], 30.0)
+                    .padding([.top, .leading], 30.0)
                 
                 ProgressView(value: Float(viewModel.daily.completedSteps), total: Float(totalSteps))
                     .padding(.leading, 30.0)
                     .frame(height: 20)
-
+                
+                
             }
             
             ZStack {
-                Circle()
-                    .stroke(Color.blue, lineWidth: 1)
-                    .frame(width: 150, height: 150)
-                    .padding()
-                Image(systemName: "star.fill")
+                
+                Image(systemName: "star.circle")
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(Color.blue)
-                    .padding(.horizontal, 60.0)
+                    .padding(.horizontal, 30.0)
+                Text("\(viewModel.daily.streak)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.white)
+                    .padding()
                 
                 
             }
@@ -79,14 +83,16 @@ struct ContentView: View {
                 TextField("I want to...", text: $viewModel.daily.firstQuestion, axis: .vertical)
                 
                     .padding()
+                    
                 
                     .textFieldStyle(.roundedBorder)
                     .lineLimit(5,reservesSpace: true)
                     .onChange(of: viewModel.daily.firstQuestion) {
                         viewModel.saveDailyToDefaults()
-               updateProgress()
-
+                        updateProgress()
+                        
                     }
+                    .disabled(viewModel.daily.completedSteps > 1)
                 
                 
                 
@@ -101,6 +107,8 @@ struct ContentView: View {
                             .lineLimit(5,reservesSpace: true)
                             .textFieldStyle(.roundedBorder)
                             .padding(.leading, 4.0)
+                            .disabled(viewModel.daily.completedSteps > 2)
+                            
                             .onChange(of: viewModel.daily.task) {
                                 viewModel.saveDailyToDefaults()
                             }
@@ -108,49 +116,80 @@ struct ContentView: View {
                         
                         Toggle(isOn: $viewModel.daily.isFinished) {
                             // Boş bırakılabilir
+                           
                         }
                         .padding(.trailing)
+                        
                         .onChange(of: viewModel.daily.isFinished) {
                             viewModel.saveDailyToDefaults()
                             updateProgress()
                         }
+                        .disabled(viewModel.daily.completedSteps > 2)
+                        .disabled(viewModel.daily.firstQuestion.isEmpty)
+                        
                         .toggleStyle(CheckboxToggleStyle())
                         .frame(width: geometry.size.width * 0.1)                    }
                     .frame(width: geometry.size.width)
-
-                
+                    
+                    
                 }
                 .frame(height: 30)
                 .padding()
+               
+                                   
+              
+                    
+                    Text("Did you take a step towards your goal today? How does it make you feel?")
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.leading)
+                        .padding()
+                    
+                    // Feeling text field
+                    TextField("today I felt...", text: $viewModel.daily.secondQuestion, axis: .vertical)
+                        .padding()
+                       
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(5,reservesSpace: true)
+                        .onChange(of: viewModel.daily.secondQuestion) {
+                            viewModel.saveDailyToDefaults()
+                            updateProgress()
+                        }
+                        .disabled(viewModel.daily.task.isEmpty)
+                        .disabled(!viewModel.daily.isFinished )
+                    
                 
-                
-                
-                Text("Did you take a step towards your goal today? How does it make you feel?")
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-                    .padding()
-                
-                // Feeling text field
-                TextField("today I felt...", text: $viewModel.daily.secondQuestion, axis: .vertical)
-                    .padding()
-                    .textFieldStyle(.roundedBorder)
-                    .lineLimit(5,reservesSpace: true)
-                    .onChange(of: viewModel.daily.secondQuestion) {
-                        viewModel.saveDailyToDefaults()
-                        updateProgress()
-                    }
             }
             .padding()
             
+            
+            
+            Button{ viewModel.daily.streak += 1 }
+             label: { Text("complete your day")
+             .padding()
+             .bold()
+             .foregroundStyle(Color.white)
+             .background{Color.blue}
+             .clipShape(RoundedRectangle(cornerRadius: 20))
+                 
+             }
         }
     }
     
     private func updateProgress() {
         viewModel.daily.completedSteps = 0
-        if !viewModel.daily.firstQuestion.isEmpty { viewModel.daily.completedSteps += 1 }
-            if !viewModel.daily.task.isEmpty && viewModel.daily.isFinished { viewModel.daily.completedSteps += 1 }
-            if !viewModel.daily.secondQuestion.isEmpty { viewModel.daily.completedSteps += 1 }
+        if !viewModel.daily.firstQuestion.isEmpty {
+            viewModel.daily.completedSteps = 1
+            if !viewModel.daily.task.isEmpty && viewModel.daily.isFinished { viewModel.daily.completedSteps = 2
+                
+                if !viewModel.daily.secondQuestion.isEmpty { viewModel.daily.completedSteps = 3
+                    }
+                
+            }
+            
+            
         }
+        
+    }
 }
 
 
