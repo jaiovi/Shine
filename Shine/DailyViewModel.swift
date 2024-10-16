@@ -12,7 +12,9 @@ class DailyViewModel: ObservableObject {
     @AppStorage("lastActiveDate") private var lastActiveDate: String = ""
     
     init() {
-        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0, progress: 0.0)
+
+        self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0, streak: 0, progress: 0.0)
+
         
         if let savedDaily = loadDailyFromDefaults() {
             self.daily = savedDaily
@@ -30,7 +32,20 @@ class DailyViewModel: ObservableObject {
         
         if lastActiveDate != currentDateString {
             // A new day has passed, reset the daily data
-            self.daily = Daily(firstQuestion: "", task: "", isFinished: false, secondQuestion: "", completedSteps: 0, progress: 0)
+
+            
+            if self.daily.completedSteps != 3{
+                self.daily.streak = 0
+            }
+            
+                        self.daily.firstQuestion = ""
+                        self.daily.task = ""
+                        self.daily.isFinished = false
+                        self.daily.secondQuestion = ""
+                        self.daily.completedSteps = 0
+          self.daily.progress = 0
+            
+
             lastActiveDate = currentDateString
         }
     }
@@ -55,3 +70,4 @@ class DailyViewModel: ObservableObject {
         self.daily.progress = CGFloat(daily.completedSteps) / CGFloat(totalSteps)
     }
 }
+
