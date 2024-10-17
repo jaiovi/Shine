@@ -139,7 +139,7 @@ struct ContentView: View {
                                 .foregroundColor(Color.blue)
                                 .padding(.horizontal, 39.0)
                             
-                            Text("\(viewModel.daily.streak)")
+                            Text("\(viewModel.daily.streak)") 
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.white)
@@ -269,7 +269,7 @@ struct ContentView: View {
                     ZStack {
                         // Background with rounded corners
                         RoundedRectangle(cornerRadius: 20) // Set the corner radius
-                            .fill(Color.blue.opacity(0.6)) // Background color with opacity
+                            .fill(Color.blue.opacity(0.7)) // Background color with opacity
                             .frame(width: 300, height: 70) // Set the desired width and height
                         
                         // Text with styles
