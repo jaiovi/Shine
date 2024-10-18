@@ -17,6 +17,7 @@ struct CheckboxToggleStyle: ToggleStyle {
                 .resizable()
                 .frame(width: 24, height: 24)
                 .onTapGesture { configuration.isOn.toggle() }
+            
         }
     }
 }
@@ -82,7 +83,6 @@ struct ConfettiParticleEmitter: View {
         }
     }
 }
-
 
 struct ConfettiParticle: Identifiable {
     let id: UUID
