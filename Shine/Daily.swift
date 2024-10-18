@@ -15,9 +15,7 @@ struct Daily: Identifiable, Codable {
     var isFinished: Bool
     var secondQuestion: String
     var completedSteps: Int
-
     var streak: Int
-
     var progress: CGFloat
     var completed: Bool 
 

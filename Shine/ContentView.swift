@@ -139,7 +139,7 @@ struct ContentView: View {
                                 .foregroundColor(Color.blue)
                                 .padding(.horizontal, 39.0)
                             
-                            Text("\(viewModel.daily.streak)") 
+                            Text("\(viewModel.daily.streak)")
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color.white)
@@ -228,10 +228,9 @@ struct ContentView: View {
                                 viewModel.daily.completed = true
                                 viewModel.saveDailyToDefaults()
                                 
-                                confettiCounter += 1 // Trigger confetti
-                                showCongratsMessage = true // Show "Congrats" text
+                                confettiCounter += 1
+                                showCongratsMessage = true
                                 
-                                // Hide "Congrats" after 1 second
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                                     withAnimation {
                                         showCongratsMessage = false
@@ -267,24 +266,22 @@ struct ContentView: View {
             VStack {
                 if showCongratsMessage {
                     ZStack {
-                        // Background with rounded corners
-                        RoundedRectangle(cornerRadius: 20) // Set the corner radius
-                            .fill(Color.blue.opacity(0.7)) // Background color with opacity
-                            .frame(width: 300, height: 70) // Set the desired width and height
-                        
-                        // Text with styles
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.blue.opacity(0.7))
+                            .frame(width: 300, height: 70)
                         Text("You did it! Keep Shining ✨")
-                            .font(.system(size: 22, weight: .bold)) // Use a smaller font size
-                            .fontWeight(.bold) // Customize font weight
-                            .foregroundColor(.white) // Change text color to white for contrast
-                            .multilineTextAlignment(.center) // Center align the text
-                            .frame(maxWidth: .infinity, maxHeight: .infinity) // Make text frame flexible
-                            .padding() // Add padding around the text
-                            .opacity(opacity) // Set the opacity of the text
-                            .animation(.easeInOut(duration: 1.0), value: opacity) // Animate opacity
-                            .minimumScaleFactor(0.5) // Allow text to scale down if too big
+                            .font(.system(size: 22, weight: .bold))
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .padding()
+                            .opacity(opacity)
+                            .animation(.easeInOut(duration: 1.0), value: opacity)
+                            .minimumScaleFactor(0.5)
                     }
-                    .padding()               }
+                    .padding()
+                }
                 
                 ConfettiCannon(counter: $confettiCounter, num: 50, radius: 500.0)
             }
@@ -308,7 +305,6 @@ struct ContentView: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
 
 
 #Preview {
